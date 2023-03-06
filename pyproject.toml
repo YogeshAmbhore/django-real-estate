@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "estate-src"
+version = "0.1.0"
+description = ""
+authors = ["Yogesh Ambhore <yogeshambhore45@gmail.com>"]
+readme = "README.md"
+packages = [{include = "estate_src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.1.7"
+djangorestframework = "^3.14.0"
+django-environ = "^0.10.0"
+django-filter = "^22.1"
+django-autoslug = "^1.9.8"
+django-countries = "^7.5.1"
+pillow = "^9.4.0"
+django-phonenumber-field = "^7.0.2"
+phonenumbers = "^8.13.7"
+psycopg2-binary = "^2.9.5"
+flake8 = "^6.0.0"
+black = "^23.1.0"
+isort = "^5.12.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
