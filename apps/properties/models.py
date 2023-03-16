@@ -35,7 +35,7 @@ class Property(TimeStampedUUIDModel):
     title = models.CharField(verbose_name = _("Property Title"), max_length=250)
     slug = AutoSlugField(populate_from="title", unique=True, always_update=True)
     ref_code = models.CharField(verbose_name=_("Property Reference Code"), max_length=255, unique=True, blank=True)
-    description = models.TextField(verbose_name=_("Descriptio"), default="Default description...update me please...")
+    description = models.TextField(verbose_name=_("Description"), default="Default description...update me please...")
     country = CountryField(verbose_name=_("Country"), default="IND", blank_label="(select country)")
     city = models.CharField(verbose_name=_("City"), max_length=180, default="Mumbai")
     postal_code = models.CharField(verbose_name=_("Postal Code"), max_length=100, default="140")
@@ -69,7 +69,7 @@ class Property(TimeStampedUUIDModel):
 
     def save(self, *args, **kwargs):
         self.title = str.title(self.title)
-        self.description = str.description(self.description)
+        self.description = str.capitalize(self.description)
         self.ref_code = "".join(random.choices(string.ascii_uppercase + string.digits, k=10))
         super(Property, self).save(*args, **kwargs)
     
