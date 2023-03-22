@@ -10,15 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from django.utils.log import DEFAULT_LOGGING
-import logging.config
 import logging
+import logging.config
+from datetime import timedelta
 from pathlib import Path
-import environ
 
-env = environ.Env(
-    DEBUG=(bool, False)
-)
+import environ
+from django.utils.log import DEFAULT_LOGGING
+
+env = environ.Env(DEBUG=(bool, False))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -148,7 +148,7 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
 # REST_FRAMEWORK = {
 #     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -195,7 +195,6 @@ REST_FRAMEWORK = {
     )
 }
 
-from datetime import timedelta
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": (
@@ -234,39 +233,43 @@ logger = logging.getLogger(__name__)
 
 LOG_LEVEL = "INFO"
 try:
-    logging.config.dictConfig({
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "console": {
-                "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+    logging.config.dictConfig(
+        {
+            "version": 1,
+            "disable_existing_loggers": False,
+            "formatters": {
+                "console": {
+                    "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+                },
+                "file": {
+                    "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+                },
+                "django.server": DEFAULT_LOGGING["formatters"]["django.server"],
             },
-            "file": {
-                "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+            "handlers": {
+                "console": {
+                    "class": "logging.StreamHandler",
+                    "formatter": "console",
+                },
+                "file": {
+                    "level": "INFO",
+                    "class": "logging.FileHandler",
+                    "formatter": "file",
+                    "filename": "logs/real_estate.log",
+                },
+                "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
             },
-            "django.server": DEFAULT_LOGGING["formatters"]["django.server"],
-        },
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "console",
+            "loggers": {
+                "": {
+                    "level": "INFO",
+                    "handlers": ["console", "file"],
+                    "propagate": False,
+                },
+                "apps": {"level": "INFO", "handlers": ["console"], "propagate": False},
+                "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
             },
-            "file": {
-                "level": "INFO",
-                "class": "logging.FileHandler",
-                "formatter": "file",
-                "filename": "logs/real_estate.log",
-            },
-            "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
-        },
-        "loggers": {
-            "": {"level": "INFO", "handlers": ["console", "file"], "propagate": False},
-            "apps": {
-                "level": "INFO", "handlers": ["console"], "propagate": False
-            },
-            "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
         }
-    })
+    )
     print("Logging configuration successful!")
 except Exception as e:
     print("Logging configuration failed: ", e)

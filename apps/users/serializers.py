@@ -20,8 +20,20 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name',
-                  'full_name', 'gender', 'phone_number', 'profile_photo', 'country', 'city', 'top_seller']
+        fields = [
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "full_name",
+            "gender",
+            "phone_number",
+            "profile_photo",
+            "country",
+            "city",
+            "top_seller",
+        ]
 
     def get_first_name(self, obj):
         return obj.first_name.title()

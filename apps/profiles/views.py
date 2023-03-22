@@ -26,10 +26,12 @@ def get_all_agents(request):
     return Response(name_spaced_response, status=status.HTTP_200_OK)
 """
 
+
 class TopAgentsListAPIView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = Profile.objects.filter(top_agent = True)
+    queryset = Profile.objects.filter(top_agent=True)
     serializer_class = ProfileSerializer
+
 
 class GetProfileAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -40,6 +42,7 @@ class GetProfileAPIView(APIView):
         user_profile = Profile.objects.get(user=user)
         serializer = ProfileSerializer(user_profile, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class UpdateProfileAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -55,9 +58,11 @@ class UpdateProfileAPIView(APIView):
         user_name = request.user.username
         if user_name != username:
             raise NotYourProfile
-        
+
         data = request.data
-        serializer = UpdateProfileSerializer(instance=request.user.profile, data=data, partial=True)
+        serializer = UpdateProfileSerializer(
+            instance=request.user.profile, data=data, partial=True
+        )
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
