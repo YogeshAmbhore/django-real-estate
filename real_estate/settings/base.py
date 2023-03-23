@@ -34,6 +34,8 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
+CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1:8080', 'http://127.0.0.1:8080']
+
 
 
 # Application definition
